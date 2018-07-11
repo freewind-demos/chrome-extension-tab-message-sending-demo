@@ -1,16 +1,18 @@
-Kotlin JS Hello World Demo
-=======================
+Chrome Extension Using KotlinJs
+================================
 
-Hello world from kotlin-js.
+A simple chrome extension to show current url, written with KotlinJs.
 
-
-Run:
+Build:
 
 ```
 ./gradlew compileKotlin2Js
-open index.html
+cd extension
+npm install
 ```
 
-You will see "Hello, Kotlin!" in console of your browser's developer panel.
+Install:
 
+Chrome -> `Extensions` -> Enable `Developer Mode` -> `Load unpacked` -> select the `extension` directory of this project.
 
+Open a page, and click the icon of this extension on toolbar, you will see a popup dialog with current url.

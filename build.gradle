@@ -12,6 +12,10 @@ buildscript {
 
 apply plugin: 'kotlin2js'
 
+compileKotlin2Js {
+    kotlinOptions.outputFile = "${projectDir}/extension/generated/hello.js"
+}
+
 repositories {
     jcenter()
 }

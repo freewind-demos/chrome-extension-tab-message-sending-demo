@@ -1,8 +1,20 @@
 package example
 
+import kotlin.browser.document
+import kotlin.browser.window
+
 fun main(args: Array<String>) {
-    console.log(hello("Kotlin JS"))
+    document.addEventListener("DOMContentLoaded", {
+        getCurrentTabUrl { url ->
+            window.alert("current url is: $url")
+        }
+    })
 }
 
-fun hello(name:String) = "Hello, $name!"
+private fun getCurrentTabUrl(callback: (String) -> Unit) {
+    val queryInfo = Tab(active = true, currentWindow = true)
+    chrome.tabs.query(queryInfo) { tabs ->
+        tabs.firstOrNull()?.url?.run(callback)
+    }
+}
 
