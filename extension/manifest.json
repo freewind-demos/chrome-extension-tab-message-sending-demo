@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Getting started example",
-  "description": "This extension shows a Google Image search result for the current page",
+  "name": "Get url of current tag",
+  "description": "This extension will alert the url of current tag",
   "version": "1.0",
 
   "browser_action": {
@@ -10,7 +10,6 @@
     "default_popup": "hello.html"
   },
   "permissions": [
-    "activeTab",
-    "https://ajax.googleapis.com/"
+    "activeTab"
   ]
 }
