@@ -1,5 +1,7 @@
 package example
 
+import JsObj
+import chrome.tabs.QueryInfo
 import kotlin.browser.document
 import kotlin.browser.window
 
@@ -12,7 +14,10 @@ fun main(args: Array<String>) {
 }
 
 private fun getCurrentTabUrl(callback: (String) -> Unit) {
-    val queryInfo = Tab(active = true, currentWindow = true)
+    val queryInfo = JsObj<QueryInfo>().apply {
+        active = true
+        currentWindow = true
+    }
     chrome.tabs.query(queryInfo) { tabs ->
         tabs.firstOrNull()?.url?.run(callback)
     }
