@@ -17,6 +17,7 @@ compileKotlin2Js {
 }
 
 repositories {
+    mavenLocal()
     jcenter()
 }
 
