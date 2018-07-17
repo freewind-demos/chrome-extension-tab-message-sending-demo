@@ -19,10 +19,12 @@ compileKotlin2Js {
 repositories {
     mavenLocal()
     jcenter()
+    maven { url 'https://dl.bintray.com/freewind/maven/' }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    compile 'freewind.github.com:kotlin-js-commons:0.1.0'
     compile "freewind:chrome-ts2kt:1.0.0"
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
