@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile 'freewind.github.com:kotlin-js-commons:0.1.1'
+    compile 'freewind.github.com:kotlin-js-commons:0.1.2'
     compile "freewind.github.com:chrome-ts2kt:0.1.1"
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
