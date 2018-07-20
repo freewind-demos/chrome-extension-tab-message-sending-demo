@@ -1,15 +1,15 @@
 {
   "manifest_version": 2,
-
-  "name": "Get url of current tag",
-  "description": "This extension will alert the url of current tag",
+  "name": "tab-message-sending-demo",
+  "description": "tab-message-sending-demo",
   "version": "1.0",
-
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "hello.html"
   },
   "permissions": [
-    "activeTab"
+    "tabs",
+    "activeTab",
+    "<all_urls>"
   ]
 }

@@ -1,25 +1,27 @@
 package example
 
-import JsObj
+import chrome.tabs.InjectDetails
 import chrome.tabs.QueryInfo
-import kotlin.browser.document
-import kotlin.browser.window
+import kotlinjs.common.jsonAs
+
+data class Message(val action: String, val message: String)
 
 fun main(args: Array<String>) {
-    document.addEventListener("DOMContentLoaded", {
-        getCurrentTabUrl { url ->
-            window.alert("current url is: $url")
+    chrome.tabs.query(jsonAs<QueryInfo>().apply {
+        this.active = true
+    }) { tabs ->
+        tabs.firstOrNull()?.let { tab ->
+            console.log("current tab: ${tab.id}")
+            chrome.tabs.executeScript(tab.id!!, jsonAs<InjectDetails>().apply {
+                file = "run-in-tab.js"
+            }) { _ ->
+                console.log("### send message to tab: ${tab.id}")
+                chrome.tabs.sendMessage(tab.id!!, Message("ALERT", "message-from-extension"), responseCallback = { response ->
+                    console.log("Response from remote: $response")
+                })
+            }
         }
-    })
-}
+    }
 
-private fun getCurrentTabUrl(callback: (String) -> Unit) {
-    val queryInfo = JsObj<QueryInfo>().apply {
-        active = true
-        currentWindow = true
-    }
-    chrome.tabs.query(queryInfo) { tabs ->
-        tabs.firstOrNull()?.url?.run(callback)
-    }
 }
 
