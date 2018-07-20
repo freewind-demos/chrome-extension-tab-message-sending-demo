@@ -9,6 +9,8 @@ fun main(args: Array<String>) {
 
     chrome.runtime.onMessage.addListener { request, messageSender, sendResponse ->
         console.log(request)
+        console.log(messageSender)
+        
         val data: Message = request.unsafeCast<Message>()
         if (data.action == "ALERT") {
             window.alert(data.message)

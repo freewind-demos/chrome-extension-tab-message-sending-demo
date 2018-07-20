@@ -38035,6 +38035,7 @@ this['run-in-tab-project'] = function (_, Kotlin) {
   };
   function main$lambda(request, messageSender, sendResponse) {
     console.log(request);
+    console.log(messageSender);
     var data = request;
     if (equals(data.action, 'ALERT')) {
       window.alert(data.message);
