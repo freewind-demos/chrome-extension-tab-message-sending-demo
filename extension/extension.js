@@ -38009,9 +38009,10 @@ this['chrome-extension-tab-message-sending-demo'] = function (_, Kotlin, $module
   var firstOrNull = Kotlin.kotlin.collections.firstOrNull_us0mfu$;
   var toString = Kotlin.toString;
   var ensureNotNull = Kotlin.ensureNotNull;
-  var sendMessage = chrome.tabs.sendMessage;
   var executeScript = chrome.tabs.executeScript;
   var query = chrome.tabs.query;
+  var equals = Kotlin.equals;
+  var sendMessage = chrome.tabs.sendMessage;
   function Message(action, message) {
     this.action = action;
     this.message = message;
@@ -38042,14 +38043,9 @@ this['chrome-extension-tab-message-sending-demo'] = function (_, Kotlin, $module
   Message.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.action, other.action) && Kotlin.equals(this.message, other.message)))));
   };
-  function main$lambda$lambda$lambda$lambda(response) {
-    console.log('Response from remote: ' + response);
-    return Unit;
-  }
   function main$lambda$lambda$lambda(closure$tab) {
     return function (f) {
-      console.log('### send message to tab: ' + toString(closure$tab.id));
-      sendMessage(ensureNotNull(closure$tab.id), new Message('ALERT', 'message-from-extension'), main$lambda$lambda$lambda$lambda);
+      sendMessageToTab(closure$tab);
       return Unit;
     };
   }
@@ -38068,10 +38064,35 @@ this['chrome-extension-tab-message-sending-demo'] = function (_, Kotlin, $module
     return Unit;
   }
   function main(args) {
+    listenOnMessages();
     var tmp$;
     var $receiver = (tmp$ = {}) == null || Kotlin.isType(tmp$, Any) ? tmp$ : throwCCE();
     $receiver.active = true;
     query($receiver, main$lambda);
+  }
+  function listenOnMessages$lambda(request, messageSender, sendResponse) {
+    console.log('----- received message -----');
+    console.log(request);
+    console.log(messageSender);
+    var message = request;
+    if (equals(message.action, 'PRINT')) {
+      console.log(message.message);
+      sendResponse('PRINT_DONE!');
+    }
+    return Unit;
+  }
+  function listenOnMessages() {
+    console.log('### listen on PRINT messages');
+    chrome.runtime.onMessage.addListener(listenOnMessages$lambda);
+  }
+  function sendMessageToTab$lambda(response) {
+    console.log('----- received response -----');
+    console.log(response);
+    return Unit;
+  }
+  function sendMessageToTab(tab) {
+    console.log('### send ALERT message to tab: ' + toString(tab.id));
+    sendMessage(ensureNotNull(tab.id), new Message('ALERT', 'message-from-extension'), sendMessageToTab$lambda);
   }
   var package$example = _.example || (_.example = {});
   package$example.Message = Message;

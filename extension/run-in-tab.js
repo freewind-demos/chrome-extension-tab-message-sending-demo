@@ -38003,6 +38003,7 @@ this['run-in-tab-project'] = function (_, Kotlin) {
   var Kind_CLASS = Kotlin.Kind.CLASS;
   var equals = Kotlin.equals;
   var Unit = Kotlin.kotlin.Unit;
+  var sendMessage = chrome.runtime.sendMessage;
   function Message(action, message) {
     this.action = action;
     this.message = message;
@@ -38033,23 +38034,39 @@ this['run-in-tab-project'] = function (_, Kotlin) {
   Message.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.action, other.action) && Kotlin.equals(this.message, other.message)))));
   };
-  function main$lambda(request, messageSender, sendResponse) {
-    console.log(request);
-    console.log(messageSender);
-    var data = request;
-    if (equals(data.action, 'ALERT')) {
-      window.alert(data.message);
-    }
-    sendResponse('DONE!');
-    return Unit;
-  }
   function main(args) {
     console.log('### run-in-tab.js is loaded, and listen on messages');
-    chrome.runtime.onMessage.addListener(main$lambda);
+    listenOnMessages();
+    sendToExtension();
+  }
+  function listenOnMessages$lambda(request, messageSender, sendResponse) {
+    console.log('----- received message -----');
+    console.log(request);
+    console.log(messageSender);
+    var message = request;
+    if (equals(message.action, 'ALERT')) {
+      window.alert(message.message);
+      sendResponse('ALERT_DONE!');
+    }
+    return Unit;
+  }
+  function listenOnMessages() {
+    console.log('### listen on ALERT messages');
+    chrome.runtime.onMessage.addListener(listenOnMessages$lambda);
+  }
+  function sendToExtension$lambda(response) {
+    console.log('----- received response -----');
+    console.log(response);
+    return Unit;
+  }
+  function sendToExtension() {
+    console.log('### send PRINT message');
+    sendMessage(new Message('PRINT', 'message-from-tab'), sendToExtension$lambda);
   }
   var package$example = _.example || (_.example = {});
   package$example.Message = Message;
   package$example.main_kand9s$ = main;
+  package$example.sendToExtension = sendToExtension;
   main([]);
   Kotlin.defineModule('run-in-tab-project', _);
   return _;
